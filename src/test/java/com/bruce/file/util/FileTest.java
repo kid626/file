@@ -21,7 +21,7 @@ public class FileTest {
 
     public static void main(String[] args) throws Exception {
         // 1 获取所有 Controller 文件
-        String basePath = "D:\\document\\workspace\\idea_workspace\\smart-park\\local-park\\park3-local-extend-api\\park3-local-extend-api-web\\src\\main\\java\\com\\unicom\\park\\web\\controller";
+        String basePath = "D:\\document\\workspace\\idea_workspace\\smart-park\\local-park\\park3-local-base-api\\park3-local-base-api-web\\src\\main\\java\\com\\unicom\\park\\web\\controller";
         File file = new File(basePath);
         if (file.isDirectory()) {
             File[] files = file.listFiles();
@@ -30,7 +30,7 @@ public class FileTest {
             }
         }
         // allFile.clear();
-        // allFile.add(new File("D:\\document\\workspace\\idea_workspace\\smart-park\\local-park\\park3-local-extend-api\\park3-local-extend-api-web\\src\\main\\java\\com\\unicom\\park\\web\\controller\\commonService\\admin\\FactoryController.java"));
+        // allFile.add(new File("D:\\document\\workspace\\idea_workspace\\smart-park\\local-park\\park3-local-base-api\\park3-local-base-api-web\\src\\main\\java\\com\\unicom\\park\\web\\controller\\contentOperation\\admin\\MessageCommentController.java"));
         // 2 遍历文件，往含有 @AuthResource 注解的行前面添加 @SaCheckPermission
         for (File controller : allFile) {
             write2File(controller, "@AuthResource");
@@ -64,8 +64,14 @@ public class FileTest {
         String thisLine;
         // jvm 退出 临时文件删除
         outFile.deleteOnExit();
+        // 是否已经修改过了
+        boolean flag = false;
         while ((thisLine = in.readLine()) != null) {
             //  当读取到目标行时 写入需要写入的内容
+            if (thisLine.contains("import cn.dev33.satoken.annotation.SaCheckPermission;")) {
+                flag = true;
+                break;
+            }
             if (thisLine.contains("import com.unicom.middleware.unicom.common.dto.Result;")) {
                 out.println("import cn.dev33.satoken.annotation.SaCheckPermission;");
             }
@@ -82,10 +88,15 @@ public class FileTest {
         out.flush();
         out.close();
         in.close();
-        // 删除原始文件
-        testFile.delete();
-        // 把临时文件改名为原文件名
-        outFile.renameTo(testFile);
+        // 没有修改过
+        if (!flag) {
+            // 删除原始文件
+            testFile.delete();
+            // 把临时文件改名为原文件名
+            outFile.renameTo(testFile);
+        } else {
+            outFile.delete();
+        }
     }
 
 
