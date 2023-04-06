@@ -11,21 +11,21 @@ spring:
     default-platform: minio
     thumbnail-suffix: ".min.jpg"
     local:
-      - platform: local # \u5B58\u50A8\u5E73\u53F0\u6807\u8BC6
-        enable-storage: true #\u662F\u5426\u5F00\u542F\u672C\u5B58\u50A8\uFF08\u53EA\u80FD\u9009\u4E00\u79CD\uFF09
-        enable-access: true #\u542F\u7528\u8BBF\u95EE\uFF08\u7EBF\u4E0A\u8BF7\u4F7F\u7528 Nginx \u914D\u7F6E\uFF0C\u6548\u7387\u66F4\u9AD8\uFF09
-        domain: "http://127.0.0.1:2222/" #\u8BBF\u95EE\u57DF\u540D\uFF0C\u6CE8\u610F\u540E\u9762\u8981\u548Cpath-patterns\u4FDD\u6301\u4E00\u81F4\uFF0C\u201C/\u201D\u7ED3\u5C3E
-        base-path: D:/pictures/test # \u5B58\u50A8\u5730\u5740
-        path-patterns: /** #\u8BBF\u95EE\u8DEF\u5F84
+      - platform: local # 存储平台标识
+        enable-storage: true #是否开启本存储（只能选一种）
+        enable-access: true #启用访问（线上请使用 Nginx 配置，效率更高）
+        domain: "http://127.0.0.1:2222/" #访问域名，注意后面要和path-patterns保持一致，“/”结尾
+        base-path: D:/pictures/test # 存储地址
+        path-patterns: /** #访问路径
     minio:
       - platform: minio
-        enable-storage: true  # \u542F\u7528\u5B58\u50A8
+        enable-storage: true  # 启用存储
         access-key: ak
         secret-key: sk
         end-point: http://ip:9000
         bucket-name: test
-        domain: "http://ip:9000/test/" # \u8BBF\u95EE\u57DF\u540D\uFF0C\u6CE8\u610F\u201C/\u201D\u7ED3\u5C3E\uFF0C\u4F8B\u5982\uFF1Ahttp://minio.abc.com/abc/
-        base-path:  # \u57FA\u7840\u8DEF\u5F84
+        domain: "http://ip:9000/test/" # 访问域名，注意“/”结尾，例如：http://minio.abc.com/abc/
+        base-path:  # 基础路径
 upload:
   file:
     path: D:/pictures/test
